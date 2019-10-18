@@ -19,8 +19,15 @@ darkblue = (0, 0, 66)
 clock = pygame.time.Clock()
 crashed = False
 
-phoneImg = pygame.image.load('racecar.png')
-bluetoothImg = pygame.image.load('racecar.png')
+phoneImg = pygame.image.load('Phone.png')
+bluetoothImg = pygame.image.load('Bluetooth.png')
+homeImg = pygame.image.load('Home.png')
+MapsImg = pygame.image.load('Maps.png')
+settingImg = pygame.image.load('Settings.png')
+GPSImg = pygame.image.load('Satelite.png')
+CamRecImg = pygame.image.load('Recorder.png')
+
+
 
 def car(x,y):
     gameDisplay.blit(carImg, (x,y))
@@ -28,11 +35,14 @@ def car(x,y):
 x =  (display_width * 0.45)
 y = (display_height * 0.8)
 
-def mainScreen()
-	main = True
-	
-	while main:
-		for event in pygame.event.get():
+
+#def Load():
+    #load = True
+
+def mainScreen():
+    main = True
+    while main:
+        for event in pygame.event.get():
             print(event)
             if event.type == pygame.QUIT:
                 pygame.quit()
