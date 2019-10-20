@@ -9,6 +9,7 @@ from multiprocessing import Pool
 #Reversecam = "/home/pi/Desktop/Cam/ReverseCam.py"
 Dashcam = "Dashcam.py"
 Reversecam = "ReverseCam.py"
+GUI = "GUI.py"
 DebugInfo = ' [Info] '
 DebugWarn = ' [Warning] '
 DebugErr = ' [Error] '
@@ -44,8 +45,8 @@ if __name__ == '__main__':
 		
 	print(str(datetime.datetime.now()) + DebugInfo +'Starting ReverseCam script')
 	print(str(datetime.datetime.now()) + DebugInfo + 'Starting Dashcam script')
-	processes = (Dashcam, Reversecam)
-	pool = Pool(processes=2)                                                        
+	processes = (Dashcam, Reversecam, GUI)
+	pool = Pool(processes=3)                                                        
 	pool.map(run_process, processes)  
 	
 	
