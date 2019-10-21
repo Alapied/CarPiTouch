@@ -1,36 +1,13 @@
 import pygame
-imgdir = "resources\icons"
-from ReverseCam import Opencam
 from ReverseCam import Destroy
-pygame.init()
 import time
+tell = False
+imgdir = "resources\icons"
 
-display_width = 800
-display_height = 600
-x =  (display_width * 0.45)
-y = (display_height * 0.8)
-centreScreen = (display_width/2, display_height/2)
-gameDisplay = pygame.display.set_mode((display_width,display_height))
-pygame.display.set_caption('testGUI')
 
-black = (0,0,0)
-white = (255,255,255)
-blue = (0, 66, 89)
-darkblue = (0, 0, 66)
-red = (255,0,0)
-green = (0,200,0)
 
-clock = pygame.time.Clock()
-crashed = False
-
-phoneImg = pygame.image.load(imgdir +'\Phone.png')
-bluetoothImg = pygame.image.load(imgdir +'\Bluetooth.png')
-homeImg = pygame.image.load(imgdir +'\Home.png')
-MapsImg = pygame.image.load(imgdir +'\Maps.png')
-settingImg = pygame.image.load(imgdir +'\Settings.png')
-GPSImg = pygame.image.load(imgdir +'\Satellite.png')
-CamRecImg = pygame.image.load(imgdir +'\Recorder.png')
-
+def settell():
+	global tell
 
 class Icons:
 	def GPSIcon(x,y):
@@ -57,7 +34,10 @@ class Icons:
 			if click[0] == 1:
 				t_end = time.time() + 15
 				while time.time() < t_end:
-					Opencam()
+					settell()
+					tell = True
+				
+				tell = false
 				Destroy()
 		else:
 			pygame.draw.rect(gameDisplay, blue,(x,y,w,h))
@@ -132,7 +112,22 @@ def MapsButton(msg,x,y,w,h,ic,ac):
 class Windows:
 	def Load():
 		load = True
-		load = False
+		rect_x = 50
+		rect_y = 50
+		rect_changex = 5
+		rect_changey = 5
+		while load:
+			gameDisplay.fill(darkblue)
+			pygame.draw.rect(gameDisplay, white, [rect_x, rect_y, 50, 50])
+			rect_x += rect_changex
+			if rect_x == 100:
+				
+				rect_y += rect_changey
+			time.sleep(2)
+			if Loaded == True:
+				break
+			else:
+				print ('not running')
 	def mainScreen():
 		main = True
 		while main:
@@ -170,10 +165,38 @@ class Windows:
 			
 			pygame.display.update()
 			clock.tick(15)
-Windows.Load()		
-Windows.mainScreen()
-pygame.quit()
-quit()
+
+if __name__ == '__main__':
+	pygame.init()
+	display_width = 800
+	display_height = 600
+	x =  (display_width * 0.45)
+	y = (display_height * 0.8)
+	centreScreen = (display_width/2, display_height/2)
+	gameDisplay = pygame.display.set_mode((display_width,display_height))
+	pygame.display.set_caption('testGUI')
+
+	black = (0,0,0)
+	white = (255,255,255)
+	blue = (0, 66, 89)
+	darkblue = (0, 0, 66)
+	red = (255,0,0)
+	green = (0,200,0)
+
+	clock = pygame.time.Clock()
+	crashed = False
+
+	phoneImg = pygame.image.load(imgdir +'\Phone.png')
+	bluetoothImg = pygame.image.load(imgdir +'\Bluetooth.png')
+	homeImg = pygame.image.load(imgdir +'\Home.png')
+	MapsImg = pygame.image.load(imgdir +'\Maps.png')
+	settingImg = pygame.image.load(imgdir +'\Settings.png')
+	GPSImg = pygame.image.load(imgdir +'\Satellite.png')
+	CamRecImg = pygame.image.load(imgdir +'\Recorder.png')
+	Windows.Load()		
+	Windows.mainScreen()
+	pygame.quit()
+	quit()
 
 def unessiary_shite():
 		#and action != None
