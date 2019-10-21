@@ -1,5 +1,6 @@
 import pygame
 from ReverseCam import Destroy
+from startmain import Loaded
 import time
 tell = False
 imgdir = "resources\icons"

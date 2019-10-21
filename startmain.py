@@ -14,8 +14,14 @@ DebugInfo = ' [Info] '
 DebugWarn = ' [Warning] '
 DebugErr = ' [Error] '
 
+loaded = False
+gpsdd = False
 
 
+
+
+def loadedcheck()
+	if gpsdd == True and 
 def run_process(process):                                                             
     os.system('python {}'.format(process))
 
@@ -27,6 +33,7 @@ if __name__ == '__main__':
 	gpsdstatus = os.system('systemctl is-active --quiet gpsd') # will return 0 for active else inactive
 	if gpsdstatus == 0:
 		print(str(datetime.datetime.now()) + DebugInfo + 'GPSD active')
+		gpsdd = True
 	else:
 		print(str(datetime.datetime.now()) + DebugWarn + 'GPSD not Active, Service not started or Error thrown')
 		print(str(datetime.datetime.now()) + DebugInfo + 'Attempting Restart of GPSD')
@@ -39,6 +46,7 @@ if __name__ == '__main__':
 		gpsdstatus = os.system('systemctl is-active --quiet gpsd') # will return 0 for active else inactive
 		if gpsdstatus == 0:
 			print(str(datetime.datetime.now()) + DebugInfo + 'GPSD now active')
+			gpsdd = True
 		else:
 			print(str(datetime.datetime.now()) + DebugErr + 'GPSD Unable to be started')
 		

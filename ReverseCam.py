@@ -12,13 +12,16 @@ from startmain import DebugErr
 #from GUI import tell
 print(str(datetime.datetime.now()) + DebugInfo + 'Successfully Imported Reversecam libaries') #Debug 1
 
-print(str(datetime.datetime.now()) + DebugInfo + 'Initalising  Reversecam CV2 ') #Debug 1
-#Set up Video Input and Codec
-camera_port = 0
-cam = cv2.VideoCapture(camera_port + cv2.CAP_DSHOW)
-fourcc = cv2.VideoWriter_fourcc(*'XVID')
-videoOut = cv2.VideoWriter("output.avi", fourcc, 10.0, (640, 480))
-print(str(datetime.datetime.now()) + DebugInfo + 'Initalised Reversecam CV2 ') #Debug 1
+def Int():
+	print(str(datetime.datetime.now()) + DebugInfo + 'Initalising  Reversecam CV2 ') #Debug 1
+	#Set up Video Input and Codec
+	nonlocal cam
+	nonlocal videoOut
+	camera_port = 0
+	cam = cv2.VideoCapture(camera_port + cv2.CAP_DSHOW)
+	fourcc = cv2.VideoWriter_fourcc(*'XVID')
+	videoOut = cv2.VideoWriter("output.avi", fourcc, 10.0, (640, 480))
+	print(str(datetime.datetime.now()) + DebugInfo + 'Initalised Reversecam CV2 ') #Debug 1
 
 def SETGPIO():
 		#Set up GPIO PIN 
@@ -41,7 +44,7 @@ def Destroy():
 				
 if __name__ == "__main__":
 	# stuff only to run when not called via 'import' here
-	
+	Int()
 	SETGPIO()
 	while True:
 		#var1=GPIO.input(11)
