@@ -11,28 +11,25 @@ from startmain import DebugWarn
 from startmain import DebugErr
 print(str(datetime.datetime.now()) + ' Successfully Imported Reversecam libaries') #Debug 1
 
-def SETGPIO()
+def SETGPIO():
 	#Set up GPIO PIN 
 	GPIO.setmode(GPIO.BOARD)
 	#Set Pin 11 as input for camera switch
 	GPIO.setup(11, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 	print(str(datetime.datetime.now()) + ' GPIO pins configured') #Debug 1
     
-def EndProg()
-	print(str(datetime.datetime.now()) + ' Reversecam Stopped') #Debug 3
-	cam.release()
-    videoOut.release()
-    cv2.destroyAllWindows()
-    GPIO.cleanup()
 
-def InitaliseCam()
-    print(str(datetime.datetime.now()) + ' Initalising  Reversecam CV2 ') #Debug 1
+
+def InitaliseCam():
+	global cam
+	global videoOut
+	print(str(datetime.datetime.now()) + ' Initalising  Reversecam CV2 ') #Debug 1
     #Set up Video Input and Codec
-    camera_port = 3
-    cam = cv2.VideoCapture(camera_port)
-    fourcc = cv2.VideoWriter_fourcc(*'XVID')
-    videoOut = cv2.VideoWriter("output.avi", fourcc, 10.0, (640, 480))
-    print(str(datetime.datetime.now()) + ' Initalised Reversecam CV2 ') #Debug 1
+	camera_port = 2
+	cam = cv2.VideoCapture(camera_port)
+	fourcc = cv2.VideoWriter_fourcc(*'XVID')
+	videoOut = cv2.VideoWriter("output.avi", fourcc, 10.0, (640, 480))
+	print(str(datetime.datetime.now()) + ' Initalised Reversecam CV2 ') #Debug 1
 
 def Destroy():
 	cv2.destroyAllWindows()
@@ -54,6 +51,7 @@ if __name__ == "__main__":
 			while var1:
 				ret,frame = cam.read()
 				if ret == True: 
+					videoOut.write(frame)
 					#Create Fullscreen Preview of Camera 
 					cv2.namedWindow('webcam', cv2.WND_PROP_FULLSCREEN)
 					cv2.setWindowProperty('webcam',cv2.WND_PROP_FULLSCREEN,cv2.WINDOW_FULLSCREEN)
@@ -65,7 +63,13 @@ if __name__ == "__main__":
 				else:
 					print(str(datetime.datetime.now()) + DebugErr +"Unable to read Reversing Camera")
 					break
+			
 			cv2.destroyAllWindows()
-	EndProg()
+def EndProg():
+	print(str(datetime.datetime.now()) + ' Reversecam Stopped') #Debug 3
+	cam.release()
+	videoOut.release()
+	cv2.destroyAllWindows()
+	GPIO.cleanup()
 
 EndProg()

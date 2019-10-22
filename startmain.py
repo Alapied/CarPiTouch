@@ -1,10 +1,13 @@
-Import Libraries
-#import RPi.GPIO as GPIO
+#! /usr/bin/python
+
+#Import Libraries
+import RPi.GPIO as GPIO
 import time
 import os
 import datetime
 datetime.datetime(2009, 1, 6, 15, 8, 24, 78915)
 from multiprocessing import Pool
+import subprocess
 #Dashcam = "/home/pi/Desktop/Cam/Dashcam.py"
 #Reversecam = "/home/pi/Desktop/Cam/ReverseCam.py"
 Dashcam = "Dashcam.py"
@@ -17,9 +20,26 @@ DebugErr = ' [Error] '
 
 def run_process(process):                                                             
     os.system('python {}'.format(process))
-
-
-if __name__ == '__main__':
+	
+def run_Navit():
+	Navitstatus = os.system('systemctl is-active --quiet navit') # will return 0 for active else inactive
+	if Navitstatus == 0:
+		print(str(datetime.datetime.now()) + DebugInfo + 'Navit Active')
+		
+	else:
+		print(str(datetime.datetime.now()) + DebugWarn + 'Navit not Active, Service not started or Error thrown')
+		print(str(datetime.datetime.now()) + DebugInfo + ' Restarting NavIt ') #Debug 1
+		subprocess.Popen(['navit'])
+		Navitstatusstatus = os.system('systemctl is-active --quiet navit') # will return 0 for active else inactive
+		if Navitstatus == 0:
+			print(str(datetime.datetime.now()) + DebugInfo + 'Navit now running')
+			
+		else:
+			print(str(datetime.datetime.now()) + DebugErr + 'Navit Unable to be started')
+	
+	
+	
+def gpsd():
 	gpsdstatus = os.system('systemctl is-active --quiet gpsd') # will return 0 for active else inactive
 	if gpsdstatus == 0:
 		print(str(datetime.datetime.now()) + DebugInfo + 'GPSD active')
@@ -39,11 +59,14 @@ if __name__ == '__main__':
 			
 		else:
 			print(str(datetime.datetime.now()) + DebugErr + 'GPSD Unable to be started')
-	print(str(datetime.datetime.now()) + ' Running NavIt ') #Debug 1
-	os.system('navit')	
-		
+
+if __name__ == '__main__':
+	gpsd()
+	run_Navit()
+			
 	print(str(datetime.datetime.now()) + DebugInfo +'Starting ReverseCam script')
 	print(str(datetime.datetime.now()) + DebugInfo + 'Starting Dashcam script')
 	processes = (Dashcam, Reversecam)
-	pool = Pool(processes=2)                                                        
+	pool = Pool(processes=2)
 	pool.map(run_process, processes)  
+	print("after")
