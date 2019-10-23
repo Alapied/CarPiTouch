@@ -5,35 +5,45 @@ import os
 import datetime
 datetime.datetime(2009, 1, 6, 15, 8, 24, 78915)
 from multiprocessing import Pool
+import subprocess
 #Dashcam = "/home/pi/Desktop/Cam/Dashcam.py"
 #Reversecam = "/home/pi/Desktop/Cam/ReverseCam.py"
+
 Dashcam = "Dashcam.py"
 Reversecam = "ReverseCam.py"
 GUI = "GUI.py"
+
 DebugInfo = ' [Info] '
 DebugWarn = ' [Warning] '
 DebugErr = ' [Error] '
 
-loaded = False
-gpsdd = False
 
-
-
-
-def loadedcheck()
-	if gpsdd == True and 
 def run_process(process):                                                             
     os.system('python {}'.format(process))
-
-
-if __name__ == '__main__':
-	print(str(datetime.datetime.now()) + ' Running NavIt ') #Debug 1
-	#os.system('navit')
-
+	
+def run_Navit():
+	Navitstatus = os.system('systemctl is-active --quiet navit') # will return 0 for active else inactive
+	if Navitstatus == 0:
+		print(str(datetime.datetime.now()) + DebugInfo + 'Navit Active')
+		
+	else:
+		print(str(datetime.datetime.now()) + DebugWarn + 'Navit not Active, Service not started or Error thrown')
+		print(str(datetime.datetime.now()) + DebugInfo + ' Restarting NavIt ') #Debug 1
+		subprocess.Popen(['navit'])
+		Navitstatusstatus = os.system('systemctl is-active --quiet navit') # will return 0 for active else inactive
+		if Navitstatus == 0:
+			print(str(datetime.datetime.now()) + DebugInfo + 'Navit now running')
+			
+		else:
+			print(str(datetime.datetime.now()) + DebugErr + 'Navit Unable to be started')
+	
+	
+	
+def gpsd():
 	gpsdstatus = os.system('systemctl is-active --quiet gpsd') # will return 0 for active else inactive
 	if gpsdstatus == 0:
 		print(str(datetime.datetime.now()) + DebugInfo + 'GPSD active')
-		gpsdd = True
+		
 	else:
 		print(str(datetime.datetime.now()) + DebugWarn + 'GPSD not Active, Service not started or Error thrown')
 		print(str(datetime.datetime.now()) + DebugInfo + 'Attempting Restart of GPSD')
@@ -46,13 +56,17 @@ if __name__ == '__main__':
 		gpsdstatus = os.system('systemctl is-active --quiet gpsd') # will return 0 for active else inactive
 		if gpsdstatus == 0:
 			print(str(datetime.datetime.now()) + DebugInfo + 'GPSD now active')
-			gpsdd = True
+			
 		else:
 			print(str(datetime.datetime.now()) + DebugErr + 'GPSD Unable to be started')
-		
-		
+
+if __name__ == '__main__':
+	gpsd()
+	run_Navit()
+	
 	print(str(datetime.datetime.now()) + DebugInfo +'Starting ReverseCam script')
 	print(str(datetime.datetime.now()) + DebugInfo + 'Starting Dashcam script')
+	print(str(datetime.datetime.now()) + DebugInfo + 'Starting GUI')
 	processes = (Dashcam, Reversecam, GUI)
 	pool = Pool(processes=3)                                                        
 	pool.map(run_process, processes)  
