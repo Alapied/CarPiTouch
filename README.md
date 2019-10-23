@@ -6,24 +6,31 @@ It does however require a lot of Libaries to install
 
 # Installation instructions
 
-//TODO
-Update 
+//TODO INSTALLATION INSTRUCTIONS
+Update RPi
+
 Sudo apt-get update
+
 Sudo apt-get upgrade
 
 Install Raspian GUI
+
 Sudo apt-get install raspberrypi-ui-mods
+
 Once installed enter raspiconfig and set boot options: splash no, boot to desktop yes
 
 Change audio out and expand filesystem in raspi config 
+
 Sudo raspi-config
 
 Install necessary python software
+
 Sudo apt-get install python3.6
+
 Sudo apt-get install python3-pip
-Sudo apt-get install python3-opencv  //installs numpy as well, errors may occur so install dependacys for cv2
-sudo apt install libqt4-test
+
+Sudo apt-get install python3-opencv  //installs numpy as well, errors may occur so install dependencies for cv2 module 
+
 Pip3 install RPi.GPIO 
 
-Install Navit
 Sudo apt-get navit espeak
