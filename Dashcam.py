@@ -22,7 +22,7 @@ def InitaliseCV():
 	cam = cv2.VideoCapture(camera_port)
 	time.sleep(2) #Int Cam 
 	fourcc = cv2.VideoWriter_fourcc(*'XVID')
-	videoOut = cv2.VideoWriter("Frontoutput.avi", fourcc, 10.0, (640, 480))
+	videoOut = cv2.VideoWriter("Frontoutput.avi", fourcc, 10.0, (800, 480))
 	print(str(datetime.datetime.now()) + DebugInfo + 'Initalised Dashcam CV2 ') #Debug 1
 def CamRecord():
 	if x == "Y":
@@ -33,9 +33,9 @@ def CamRecord():
 				videoOut.write(frame)
 			else:
 				print(str(datetime.datetime.now()) + DebugErr + "Unable to read Dashcam Camera")
-				break
+				time.sleep(2)
 				
-def EndProg():
+def EndProg1():
 	print(str(datetime.datetime.now()) + DebugInfo + 'Dashcam Stopped') #Debug 1
 	cam.release()
 	videoOut.release()
@@ -44,4 +44,4 @@ def EndProg():
 if __name__ == '__main__':
 	InitaliseCV()
 	CamRecord()
-	EndProg()
+	

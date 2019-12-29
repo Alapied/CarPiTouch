@@ -8,11 +8,13 @@ import datetime
 datetime.datetime(2009, 1, 6, 15, 8, 24, 78915)
 from multiprocessing import Pool
 import subprocess
+
 #Dashcam = "/home/pi/Desktop/Cam/Dashcam.py"
 #Reversecam = "/home/pi/Desktop/Cam/ReverseCam.py"
 Dashcam = "Dashcam.py"
 Reversecam = "ReverseCam.py"
-
+Shutdown = "shutdown.py"
+directory = '/home/pi/footage'
 DebugInfo = ' [Info] '
 DebugWarn = ' [Warning] '
 DebugErr = ' [Error] '
@@ -33,7 +35,7 @@ def run_Navit():
 		Navitstatusstatus = os.system('systemctl is-active --quiet navit') # will return 0 for active else inactive
 		if Navitstatus == 0:
 			print(str(datetime.datetime.now()) + DebugInfo + 'Navit now running')
-			
+			#informs console that Navit is running
 		else:
 			print(str(datetime.datetime.now()) + DebugErr + 'Navit Unable to be started')
 	
@@ -61,12 +63,16 @@ def gpsd():
 			print(str(datetime.datetime.now()) + DebugErr + 'GPSD Unable to be started')
 
 if __name__ == '__main__':
+	if not os.path.exists(directory):
+		print(str(datetime.datetime.now()) + DebugWarn +'Creating Footage Dir')
+		os.makedirs(directory)
+	
 	gpsd()
 	run_Navit()
 			
 	print(str(datetime.datetime.now()) + DebugInfo +'Starting ReverseCam script')
 	print(str(datetime.datetime.now()) + DebugInfo + 'Starting Dashcam script')
-	processes = (Dashcam, Reversecam)
-	pool = Pool(processes=2)
+	processes = (Dashcam, Reversecam, Shutdown)
+	pool = Pool(processes=3)
 	pool.map(run_process, processes)  
 	print("after")
