@@ -10,6 +10,9 @@ from startmain import DebugWarn
 from startmain import DebugErr
 print(str(datetime.datetime.now()) + DebugInfo + 'Successfully Imported Reversecam libaries') #Debug 1
 
+cam = ""
+videoOut = ""
+
 def SETGPIO():
 	#Set up GPIO PIN 
 	GPIO.setmode(GPIO.BOARD)
@@ -62,6 +65,9 @@ if __name__ == "__main__":
 					cv2.setWindowProperty('webcam',cv2.WND_PROP_FULLSCREEN,cv2.WINDOW_FULLSCREEN)
 					cv2.imshow('webcam', frame)
 					#if Q is pressed break function
+					kstatus = os.system('systemctl is-active --quiet kodi') # will return 0 for active else inactive
+					if kstatus is not 0:
+						os.system('sudo killall kodi')
 					if cv2.waitKey(1)&0xFF == ord('q'):
 						Destroy()
 						break

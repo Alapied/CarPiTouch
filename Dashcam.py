@@ -12,7 +12,8 @@ from startmain import DebugErr
 
 print(str(datetime.datetime.now()) + DebugInfo + 'Successfully Imported Dashcam libaries') #Debug 1
 
-
+cam = ""
+videoOut = ""
 def InitaliseCV():
 	global cam
 	global videoOut

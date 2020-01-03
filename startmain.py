@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#!/usr/bin/python3+
 
 #Import Libraries
 import RPi.GPIO as GPIO
@@ -9,11 +9,13 @@ datetime.datetime(2009, 1, 6, 15, 8, 24, 78915)
 from multiprocessing import Pool
 import subprocess
 
-#Dashcam = "/home/pi/Desktop/Cam/Dashcam.py"
-#Reversecam = "/home/pi/Desktop/Cam/ReverseCam.py"
-Dashcam = "Dashcam.py"
-Reversecam = "ReverseCam.py"
-Shutdown = "shutdown.py"
+Dashcam = "/home/pi/Desktop/CarPiTouch/Dashcam.py"
+Reversecam = "/home/pi/Desktop/CarPiTouch/ReverseCam.py"
+Shutdown = "/home/pi/Desktop/CarPiTouch/shutdown.py"
+
+#Dashcam = "Dashcam.py"
+#Reversecam = "ReverseCam.py"
+#Shutdown = "shutdown.py"
 directory = '/home/pi/footage'
 DebugInfo = ' [Info] '
 DebugWarn = ' [Warning] '

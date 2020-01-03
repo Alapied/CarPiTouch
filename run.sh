@@ -1,5 +1,2 @@
-#!/bin/bash
-
-cd /home/pi/Desktop/Thing
-python /home/pi/Desktop/Thing/startmain.py
-echo done
+#!/bin/sh
+python /home/pi/Desktop/CarPiTouch/startmain.py
