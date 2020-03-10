@@ -1,4 +1,4 @@
-#!/usr/bin/python3+
+#! /usr/bin/python
 
 #Import Libraries
 import RPi.GPIO as GPIO
@@ -63,12 +63,25 @@ def gpsd():
 			
 		else:
 			print(str(datetime.datetime.now()) + DebugErr + 'GPSD Unable to be started')
+			
 
+def setgpio():
+	GPIO.setwarnings(False)
+	print(str(datetime.datetime.now()) + DebugInfo + 'GPIO Warnings set to false')
+	GPIO.setmode(GPIO.BOARD)
+	GPIO.setup(37, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+	print(str(datetime.datetime.now()) + DebugInfo + 'GPIO 37 prepped')
+	GPIO.setup(36, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+	print(str(datetime.datetime.now()) + DebugInfo + 'GPIO 36 prepped')
+	
+	
+	
 if __name__ == '__main__':
 	if not os.path.exists(directory):
 		print(str(datetime.datetime.now()) + DebugWarn +'Creating Footage Dir')
 		os.makedirs(directory)
 	
+	setgpio()
 	gpsd()
 	run_Navit()
 			

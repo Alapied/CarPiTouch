@@ -2,6 +2,8 @@
 import RPi.GPIO as GPIO
 import time
 import os
+import Dashcam as DC
+import ReverseCam as RC
 
 from startmain import directory
 from startmain import DebugInfo
@@ -12,6 +14,8 @@ import shutil #copy paste
 import datetime
 datetime.datetime(2009, 1, 6, 15, 8, 24, 78915)
 
+gpioname=37
+GPIO.setwarnings(False)
 
 Dashname = "/" + str(datetime.datetime.now()) + " Dashcam"
 Revname = "/" + str(datetime.datetime.now()) + " Revcam"
@@ -23,10 +27,10 @@ Revsrc_file = '/home/pi/Desktop/CarPiTouch/output.avi'
 
 def gpioset():
 	#Set up GPIO PIN 
-	GPIO.setmode(GPIO.BCM)
-	#Set Pin 13 as input for shutdown ingition switch
-	GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-	print(str(datetime.datetime.now()) + ' Shutdown GPIO pin configured') 
+	GPIO.setmode(GPIO.BOARD)
+	#Set Pin as input for shutdown ingition switch
+	GPIO.setup(gpioname, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+	print(str(datetime.datetime.now()) + 'Ignition GPIO pin configured') 
 	
 def copyoutput():
 	shutil.copy2(Dashsrc_file, Dashdest_file)
@@ -39,20 +43,19 @@ def shutdown():
 
 if __name__ == '__main__':
 	gpioset()
-	GPIO.input(27) = var1
-	if var1:
+	
+	if (GPIO.input(gpioname) ==1):
 		print(str(datetime.datetime.now()) + DebugInfo + 'Ignition state detected')
 	else:
 		print(str(datetime.datetime.now()) + DebugErr + 'Ignition state inactive yet pi is on')
 	
 	while True:
-		GPIO.input(27) = var1
-		if not var1:
+		
+		if (GPIO.input(gpioname) ==0):
 			max_limit = 5	# Seconds.
 			start = time.time()
 			while time.time() - start < max_limit:
-				GPIO.input(27) = var1
-				if var1:
+				if (GPIO.input(gpioname) ==1):
 					Ignon = True
 					print(str(datetime.datetime.now()) + DebugInfo + 'Ignition on')
 				else:

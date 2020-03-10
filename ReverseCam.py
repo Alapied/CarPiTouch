@@ -4,11 +4,15 @@ import RPi.GPIO as GPIO
 import time
 import numpy as np
 import datetime
+import os
 datetime.datetime(2009, 1, 6, 15, 8, 24, 78915)
 from startmain import DebugInfo
 from startmain import DebugWarn
 from startmain import DebugErr
 print(str(datetime.datetime.now()) + DebugInfo + 'Successfully Imported Reversecam libaries') #Debug 1
+
+GPIO.setwarnings(False)
+gpiopin=36
 
 cam = ""
 videoOut = ""
@@ -16,9 +20,9 @@ videoOut = ""
 def SETGPIO():
 	#Set up GPIO PIN 
 	GPIO.setmode(GPIO.BOARD)
-	#Set Pin 11 as input for camera switch
-	GPIO.setup(11, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-	print(str(datetime.datetime.now()) + DebugInfo + 'Switch GPIO pin configured') #Debug 1
+	#Set Pin 36 as input for camera switch
+	GPIO.setup(gpiopin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+	print(str(datetime.datetime.now()) + DebugInfo + 'GPIO pin 36 configured as rvc') #Debug 1
     
 
 def InitaliseCam():
@@ -48,15 +52,13 @@ if __name__ == "__main__":
 	InitaliseCam()
 	SETGPIO()
 	while True:
-		var1=GPIO.input(11)
-		#var1 = True
 		ret,frame = cam.read()
 		if ret == True: 
 			# Write the frame into the file 'output.avi'
 			videoOut.write(frame)
-		if var1: ##This will happen if var1 == true
-			print(str(datetime.datetime.now()) + DebugInfo + 'Detected Input from Pin 11 Enabling Reversing Camera')
-			while var1:
+		if (GPIO.input(gpiopin) ==1): ##This will happen if var1 == true
+			print(str(datetime.datetime.now()) + DebugInfo + 'Detected Input Enabling Reversing Camera')
+			while (GPIO.input(gpiopin) ==1):
 				ret,frame = cam.read()
 				if ret == True: 
 					videoOut.write(frame)
