@@ -13,7 +13,7 @@ print(str(datetime.datetime.now()) + DebugInfo + 'Successfully Imported Reversec
 
 GPIO.setwarnings(False)
 gpiopin=36
-
+gpiocheck1=35
 cam = ""
 videoOut = ""
 
@@ -23,17 +23,18 @@ def SETGPIO():
 	#Set Pin 36 as input for camera switch
 	GPIO.setup(gpiopin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 	print(str(datetime.datetime.now()) + DebugInfo + 'GPIO pin 36 configured as rvc') #Debug 1
-    
+	GPIO.setup(gpiocheck1, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+	print(str(datetime.datetime.now()) + DebugInfo + 'GPIO pin 35 configured as rvchk') 
 
 def InitaliseCam():
 	global cam
 	global videoOut
 	print(str(datetime.datetime.now()) + DebugInfo + 'Initalising  Reversecam CV2 ') #Debug 1
-    #Set up Video Input and Codec
+	#Set up Video Input and Codec
 	camera_port = 2
 	cam = cv2.VideoCapture(camera_port)
 	fourcc = cv2.VideoWriter_fourcc(*'XVID')
-	videoOut = cv2.VideoWriter("output.avi", fourcc, 10.0, (800, 480))
+	videoOut = cv2.VideoWriter("output.avi", fourcc, 20.0, (640, 480))
 	print(str(datetime.datetime.now()) + DebugInfo + 'Initalised Reversecam CV2 ') #Debug 1
 
 def Destroy():
@@ -52,6 +53,7 @@ if __name__ == "__main__":
 	InitaliseCam()
 	SETGPIO()
 	while True:
+		camoff=False
 		ret,frame = cam.read()
 		if ret == True: 
 			# Write the frame into the file 'output.avi'
@@ -67,16 +69,17 @@ if __name__ == "__main__":
 					cv2.setWindowProperty('webcam',cv2.WND_PROP_FULLSCREEN,cv2.WINDOW_FULLSCREEN)
 					cv2.imshow('webcam', frame)
 					#if Q is pressed break function
-					kstatus = os.system('systemctl is-active --quiet kodi') # will return 0 for active else inactive
-					if kstatus is not 0:
-						os.system('sudo killall kodi')
+					camoff = True
 					if cv2.waitKey(1)&0xFF == ord('q'):
 						Destroy()
 						break
 				else:
 					print(str(datetime.datetime.now()) + DebugErr +"Unable to read Reversing Camera")
 					break
-			
-			
-
+			if (GPIO.input(gpiopin)==0) and camoff==True:
+				camoff=False
+				Destroy()
+		if (GPIO.input(gpiocheck1) ==1):
+			break
+	EndProg()
 

@@ -3,8 +3,9 @@ import cv2
 import time
 import numpy as np
 import datetime
+import RPi.GPIO as GPIO
 datetime.datetime(2009, 1, 6, 15, 8, 24, 78915)
-x = "Y"
+GPIO.setwarnings(False)
 
 from startmain import DebugInfo
 from startmain import DebugWarn
@@ -12,34 +13,41 @@ from startmain import DebugErr
 
 print(str(datetime.datetime.now()) + DebugInfo + 'Successfully Imported Dashcam libaries') #Debug 1
 
-cam = ""
-videoOut = ""
+camd = ""
+videodOut = ""
+gpiocheck=33
 def InitaliseCV():
-	global cam
-	global videoOut
+	global camd
+	global videodOut
+	GPIO.setmode(GPIO.BOARD)
+	GPIO.setup(gpiocheck, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+	print(str(datetime.datetime.now()) + DebugInfo + 'GPIO pin 33 configured as dhchk') 
 	print(str(datetime.datetime.now()) + DebugInfo + 'Initalising Dashcam CV2 ') #Debug 1
 	#Set up Video Input and Codec
 	camera_port = 0
-	cam = cv2.VideoCapture(camera_port)
+	camd = cv2.VideoCapture(camera_port)
 	time.sleep(2) #Int Cam 
 	fourcc = cv2.VideoWriter_fourcc(*'XVID')
-	videoOut = cv2.VideoWriter("Frontoutput.avi", fourcc, 10.0, (800, 480))
+	camd.set(cv2.CAP_PROP_FOURCC, fourcc)
+	videodOut = cv2.VideoWriter("Frontoutput.avi", fourcc, 20.0, (640, 480))
 	print(str(datetime.datetime.now()) + DebugInfo + 'Initalised Dashcam CV2 ') #Debug 1
 def CamRecord():
-	if x == "Y":
-		while True:
-			ret,frame = cam.read()
-			if ret == True: 
-				# Write the frame into the file 'Frontoutput.avi'
-				videoOut.write(frame)
-			else:
-				print(str(datetime.datetime.now()) + DebugErr + "Unable to read Dashcam Camera")
-				time.sleep(2)
-				
+	while True:
+		ret,frame = camd.read()
+		if ret == True: 
+			# Write the frame into the file 'Frontoutput.avi'
+			videodOut.write(frame)
+		else:
+			print(str(datetime.datetime.now()) + DebugErr + "Unable to read Dashcam Camera")
+		
+		if (GPIO.input(gpiocheck) ==1):
+			break
+	EndProg1()
+	
 def EndProg1():
 	print(str(datetime.datetime.now()) + DebugInfo + 'Dashcam Stopped') #Debug 1
 	cam.release()
-	videoOut.release()
+	videodOut.release()
 	cv2.destroyAllWindows()	
 		
 if __name__ == '__main__':
