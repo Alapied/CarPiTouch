@@ -31,7 +31,7 @@ $ sudo apt-get install python3-pip
 ```
 * Install OpenCV, NumPy and RPi.GPIO
 ```
-$ sudo apt-get install python3-opencv
+$ sudo apt-get install python-opencv
 $ sudo pip3 install RPi.GPIO
 $ sudo apt-get install libqt4-test
 ```
