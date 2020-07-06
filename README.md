@@ -1,36 +1,54 @@
 # CarPiTouch
+If you wanted to have one of those fancy touchscreens in your car but instead of paying money for some companies piece of shit software you could use an open-source solution? Well i present my project as a solution to that problem. 
 
-A project to use a raspberry pi as a head unit within a car, with an intuitive GUI with maps, and Reversing/Dash Camera functionality
+## The Key Idea
+This is project to use a raspberry pi as a head unit within your car, with an intuitive GUI with Navit based maps, and Reversing/Dash camera functionality, also using mikebrady's shairport-sync to allow audio to be played as well. The goal is to eventually get to a state where this is working as a full blown hardware device, so that instructions can be easily followed
 
-It does however require a lot of Libaries to install
+## What i did (i think)
+These are the steps i took on a Raspberry Pi 4, there are things that changed during development so have a watchful eye
+### Prep SD card Image and Pi
+*Flash Rasbian Buster LITE to an SD card (8GB or greater) -- Current version at time of writing
+*Boot the raspi for the first time, u know the usual tinkering
+*Connect the Pi to the internet through ethernet or via the raspi config
+```
+$ sudo raspi-config
+```
+*Update the pi 
+```
+$ sudo apt-get update
+$ sudo apt-get upgrade
+```
+*Install The Desktop Enviroment
+```
+$ sudo apt-get install raspberrypi-ui-mods
+```
+Once installed enter the raspi config and set the pi to boot to desktop
+### Install Python and its dependancies
+* Install Python 3.6 and Pip - Works for some reason
+```
+$ sudo apt-get install python3.6
+$ sudo apt-get install python3-pip
+```
+* Install OpenCV, NumPy and RPi.GPIO
+```
+$ sudo apt-get install python-opencv
+$ sudo pip3 install RPi.GPIO
+$ sudo apt-get install libqt4-test
+```
+Note: I went through so many missing dependancies this list here will grow i just didnt document
+### The navigation and audio controls
+* Install Navit and espeak
+```
+$ sudo apt-get install navit espeak
+```
+* Install Kodi for non rpi4 users (optional)
+```
+$ sudo apt-get install kodi
+```
 
-# Installation instructions
+### Shareport Sync
 
-//TODO INSTALLATION INSTRUCTIONS
-Update RPi
+## The issues
+It was a really pain in the ass to install all the dependancies for Opencv Python (cv2) and try and get the multiple cameras working simutaniously, a bunch of firmware and bandwidth issues are present in the basic working product which refused to work.
+I haven't documented things well, this could use someone who knows what they're doing.
 
-Sudo apt-get update
-
-Sudo apt-get upgrade
-
-Install Raspian GUI
-
-Sudo apt-get install raspberrypi-ui-mods
-
-Once installed enter raspiconfig and set boot options: splash no, boot to desktop yes
-
-Change audio out and expand filesystem in raspi config 
-
-Sudo raspi-config
-
-Install necessary python software
-
-Sudo apt-get install python3.6
-
-Sudo apt-get install python3-pip
-
-Sudo apt-get install python3-opencv  //installs numpy as well, errors may occur so install dependencies for cv2 module 
-
-Pip3 install RPi.GPIO 
-
-Sudo apt-get navit espeak
