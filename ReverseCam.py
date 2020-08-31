@@ -31,10 +31,13 @@ def InitaliseCam():
 	global videoOut
 	print(str(datetime.datetime.now()) + DebugInfo + 'Initalising  Reversecam CV2 ') #Debug 1
 	#Set up Video Input and Codec
-	camera_port = 2
+	camera_port = 0
 	cam = cv2.VideoCapture(camera_port)
+	#cam.release()
+	#time.sleep(1)
+	#cam = cv2.VideoCapture(camera_port)
 	fourcc = cv2.VideoWriter_fourcc(*'XVID')
-	videoOut = cv2.VideoWriter("output.avi", fourcc, 20.0, (640, 480))
+	videoOut = cv2.VideoWriter("output.avi", fourcc, 10.0, (640, 480))
 	print(str(datetime.datetime.now()) + DebugInfo + 'Initalised Reversecam CV2 ') #Debug 1
 
 def Destroy():

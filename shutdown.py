@@ -43,13 +43,12 @@ def copyoutput():
 	#shutil.copy2(Dashsrc_file, Dashdest_file)
 	print(str(datetime.datetime.now()) + DebugInfo +'Moving Output files')
 	shutil.copy2(Revsrc_file, Revdest_file)
-	time.sleep(3)
 	#os.remove(Dashsrc_file)
 	os.remove(Revsrc_file)
 	
 def shutdown():
 	GPIO.cleanup()
-	os.system('sudo shutdown -h now')
+	os.system('sudo shutdown now')
 	
 def stopfeed():
 	print(str(datetime.datetime.now()) + DebugInfo + 'Stopping Cam Feeds')
@@ -58,10 +57,12 @@ def stopfeed():
 	time.sleep(0.5)
 if __name__ == '__main__':
 	gpioset()
+	
 	if (GPIO.input(gpioignition) ==1):
 		print(str(datetime.datetime.now()) + DebugInfo + 'Ignition state detected')
 	else:
 		print(str(datetime.datetime.now()) + DebugErr + 'Ignition state inactive yet pi is on')
+	
 	while True:
 		if (GPIO.input(gpioignition) ==0):
 			max_limit = 5	# Seconds.
