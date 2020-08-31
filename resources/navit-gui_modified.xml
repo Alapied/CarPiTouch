@@ -165,7 +165,10 @@ Waypoint</text></img>
 			</html>
 		]]></gui>
 		<!-- For Raspberry Pi Official display  800x400 resolution-->
-
+		
+		<!--Compass-->
+		<osd enabled="yes" type="compass" font_size="150" x="-10" y="-90" w="36" h="45"/>
+		
 		<!-- TOP LEFT -->
 		<!-- Distance to Next Maneouvre -->
 		<osd enabled="yes" type="text" label="${navigation.item[1].length[named]}" x="0" y="0" font_size="350" w="75" h="30" align="0" background_color="#000000c8" osd_configuration="2" />
