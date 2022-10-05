@@ -9,7 +9,7 @@ import subprocess
 #Dashcam = "/home/pi/Desktop/Cam/Dashcam.py"
 #Reversecam = "/home/pi/Desktop/Cam/ReverseCam.py"
 
-Dashcam = "Dashcam.py"
+#Dashcam = "Dashcam.py"
 Reversecam = "ReverseCam.py"
 GUI = "GUI.py"
 
@@ -67,8 +67,8 @@ if __name__ == '__main__':
 	print(str(datetime.datetime.now()) + DebugInfo +'Starting ReverseCam script')
 	print(str(datetime.datetime.now()) + DebugInfo + 'Starting Dashcam script')
 	print(str(datetime.datetime.now()) + DebugInfo + 'Starting GUI')
-	processes = (Dashcam, Reversecam, GUI)
-	pool = Pool(processes=3)                                                        
+	processes = (Reversecam, GUI)
+	pool = Pool(processes=2)                                                        
 	pool.map(run_process, processes)  
 	
 	

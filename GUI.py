@@ -1,13 +1,24 @@
+#from tkinter import mainloop
+from ast import If
+from msilib.schema import Icon
+from tkinter import W
 import pygame
 import os
-from ReverseCam import Destroy
-from ReverseCam import display
-from ReverseCam import camInt
-from ReverseCam import InitaliseCam
+#from ReverseCam import Destroy
+#from ReverseCam import display
+#from ReverseCam import camInt
+#from ReverseCam import InitaliseCam
 import time
+import datetime
+datetime.datetime(2009, 1, 6, 15, 8, 24, 78915)
 
 i=1
 imgdir = "resources\icons"
+DebugInfo = ' [Info] '
+DebugWarn = ' [Warning] '
+DebugErr = ' [Error] '
+globalMenustate = 0
+volume = 1.0
 
 class Icons:
 	def GPSIcon(x,y):
@@ -34,11 +45,7 @@ class Icons:
 		if x+w > mouse[0] > x and y+h > mouse[1] > y:
 			pygame.draw.rect(Display,BACKGROUND,(x,y,w,h))
 			if click[0] == 1:
-				t_end = time.time() + 15
-				while time.time() < t_end:		
-					if camInt ==True
-						display()
-				Destroy()
+				print("Cam")
 		else:
 			pygame.draw.rect(Display, BACKGROUND,(x,y,w,h))
 		Display.blit(CamRecImg, (x,y))
@@ -47,7 +54,11 @@ class Icons:
 	def SettingsIcon(x,y):
 		Display.blit(settingImg, (x,y))
 		pygame.display.flip()
-		
+
+	def bottomuibar():
+		pygame.draw.rect(Display, black, (0,500,800,100))
+		#play pause back forward
+		#if volume is certain level do speaker
 	def pythonIcon(x,y):
 		global i
 		pythonImg.set_alpha(i)
@@ -125,49 +136,67 @@ def MapsButton(msg,x,y,w,h,ic,ac):
 class Windows:
 	def Load():
 		#Only here to allow the other scripts time to finish the start phase and look a bit cool
-		
+		print(str(datetime.datetime.now()) + DebugInfo + 'Loading Main Menu')
 		t_end = time.time() + 6
 		while time.time() < t_end:		
 			Display.fill(black)
 			Icons.pythonIcon (display_width/2, display_height/2)
 			pygame.display.flip()
-		return
+		global globalMenustate 
+		globalMenustate = 1
+
 	def mainScreen():
-		main = True
-		while main:
-			for event in pygame.event.get():
-				#print(event)
-				if event.type == pygame.QUIT:
-					pygame.quit()
-					quit()
+		#print(str(datetime.datetime.now()) + DebugInfo + 'Main Menu')
+		for event in pygame.event.get():
+			#print(event)
+			if event.type == pygame.QUIT:
+				pygame.quit()
+				quit()
 			
-			Display.fill(darkblue)
+		Display.fill(darkblue)
 			
 			
-			Icons.MapsIcon(x/6,y/8,140,140)
-			Icons.GPSIcon (x/1.3, y/8)
-			Icons.CamIcon (x*1.8,y/8.9,140,140)
-			pygame.display.flip()
-			clock.tick(15)
+		Icons.MapsIcon(x/6,y/8,140,140)
+		Icons.GPSIcon (x/1.3, y/8)
+		#Icons.CamIcon (x*1.8,y/8.9,140,140)
+		Icons.bottomuibar()
+		pygame.display.flip()
+		clock.tick(15)
 
 	def TestScreen():
-		test = True
-		while test:
-			for event in pygame.event.get():
-				#print(event)
-				if event.type == pygame.QUIT:
-					pygame.quit()
-					quit()
+		for event in pygame.event.get():
+			#print(event)
+			if event.type == pygame.QUIT:
+				pygame.quit()
+				quit()
 			
-			Display.fill(blue)
-			Icons.MapsIcon(x/6,y/8,140,140)
-			Icons.GPSIcon (x/1.3, y/8)
+		Display.fill(blue)
+		Icons.MapsIcon(x/6,y/8,140,140)
+		Icons.GPSIcon (x/1.3, y/8)
 			
-			pygame.display.update()
-			clock.tick(15)
+		pygame.display.update()
+		clock.tick(15)
+
+def menuselector(menuState):
+	#print(menuState)
+	#print(globalMenustate)
+	if menuState == 0:
+		Windows.Load()
+	elif menuState == 1:
+		Windows.mainScreen()
+	elif menuState == 2:
+		Windows.TestScreen()
+	else:
+		print(menuState,str(datetime.datetime.now()) + DebugErr + 'Incorrect Menu selected')
+
+def mainmenuloop():
+	while True:
+		menuselector(globalMenustate)
+
 
 if __name__ == '__main__':
 	pygame.init()
+	print(str(datetime.datetime.now()) + DebugInfo + 'pygame Initialised')
 	display_width = 800
 	display_height = 600
 	x =  (display_width * 0.45)
@@ -175,7 +204,6 @@ if __name__ == '__main__':
 	centreScreen = (display_width/2, display_height/2)
 	Display = pygame.display.set_mode((display_width,display_height))
 	pygame.display.set_caption('testGUI')
-
 	black = (0,0,0)
 	white = (255,255,255)
 	blue = (0, 66, 89)
@@ -185,6 +213,7 @@ if __name__ == '__main__':
 	BACKGROUND = darkblue
 	clock = pygame.time.Clock()
 	crashed = False
+	print(str(datetime.datetime.now()) + DebugInfo + 'pygame accesories loaded')
 
 	phoneImg = pygame.image.load(imgdir +'\Phone.png')
 	bluetoothImg = pygame.image.load(imgdir +'\Bluetooth.png')
@@ -194,13 +223,21 @@ if __name__ == '__main__':
 	GPSImg = pygame.image.load(imgdir +'\Satellite.png')
 	CamRecImg = pygame.image.load(imgdir +'\Recorder.png')
 	
+	Fullvol = pygame.image.load(imgdir +'\speaker-xxl.png')
+	halfvol = pygame.image.load(imgdir +'\MiniSpeaker.png')
+	lowvol = pygame.image.load(imgdir +'\MiniSpeakerno.png')
+	mutevol = pygame.image.load(imgdir +'\speakermute.png')
+
+	skipff = pygame.image.load(imgdir +'\Doublearrow.png')
+	skiprr = pygame.image.load(imgdir +'\Doublearrowback.png')
+	pausepic = pygame.image.load(imgdir +'\pause.png')
+	playpic = pygame.image.load(imgdir +'\Play.png')
+
 	pythonImg = pygame.image.load(imgdir +'\Python.png')
 	pythonImg = pythonImg.convert()
+	print(str(datetime.datetime.now()) + DebugInfo + 'Images Loaded')
 	
-	
-	
-	Windows.Load()		
-	Windows.mainScreen()
+	mainmenuloop()
 	pygame.quit()
 	quit()
 
