@@ -12,11 +12,14 @@ import subprocess
 #Dashcam = "/home/pi/Desktop/CarPiTouch/Dashcam.py"
 Reversecam = "/home/pi/Desktop/CarPiTouch/ReverseCam.py"
 Shutdown = "/home/pi/Desktop/CarPiTouch/shutdown.py"
+GUI = "/home/pi/Desktop/CarPiTouch/GUI.py"
 #navit = "/home/pi/Desktop/CarPiTouch/startnavit.py"
 
 #Dashcam = "Dashcam.py"
 #Reversecam = "ReverseCam.py"
 #Shutdown = "shutdown.py"
+#GUI = "GUI.py"
+
 directory = '/media/pi/6EAA-CEC11/footage'
 DebugInfo = ' [Info] '
 DebugWarn = ' [Warning] '
@@ -81,8 +84,8 @@ if __name__ == '__main__':
 	setgpio()
 	gpsd()
 	
-	print(str(datetime.datetime.now()) + DebugInfo +'Starting ReverseCam script')
-	processes = (Reversecam, Shutdown)
+	print(str(datetime.datetime.now()) + DebugInfo +'Starting multiple processes')
+	processes = (Reversecam, Shutdown, GUI)
 	pool = Pool(processes=2)
 	pool.map(run_process, processes)  
 	print("after")
